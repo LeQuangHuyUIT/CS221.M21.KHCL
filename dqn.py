@@ -26,9 +26,9 @@ EPSILON_DECAY=int(1e6)
 NUM_ENVS = 4
 TARGET_UPDATE_FREQ=10000 // NUM_ENVS
 LR = 5e-5
-SAVE_PATH = './atari_model_vanilla.pack'.format(LR)
+SAVE_PATH = './atari_model_Breakout.pack'.format(LR)
 SAVE_INTERVAL = 10000
-LOG_DIR = './logs/atari_vanilla' + str(LR)
+LOG_DIR = './logs/atari_vanilla_Breakout' + str(LR)
 LOG_INTERVAL = 1000
 
 def init_weights(m):
@@ -140,11 +140,11 @@ class Network(nn.Module):
 
 if __name__ == '__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() else "cpu")
+    print(device)
+    make_env = lambda: Monitor(make_atari_deepmind('Breakout-v0', scale_values=True), allow_early_resets=True)
 
-    make_env = lambda: Monitor(make_atari_deepmind('BreakoutNoFrameskip-v4', scale_values=True), allow_early_resets=True)
-
-    # vec_env = DummyVecEnv([make_env for _ in range(NUM_ENVS)])
-    vec_env = SubprocVecEnv([make_env for _ in range(NUM_ENVS)])
+    vec_env = DummyVecEnv([make_env for _ in range(NUM_ENVS)])
+    # vec_env = SubprocVecEnv([make_env for _ in range(NUM_ENVS)])
 
     env = BatchedPytorchFrameStack(vec_env, k=4)
 

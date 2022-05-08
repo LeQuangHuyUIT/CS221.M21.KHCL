@@ -104,7 +104,7 @@ class DuelingDQN(nn.Module):
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print('device:', device)
 
-make_env = lambda: make_atari_deepmind('SpaceInvaders-v0', render=True)
+make_env = lambda: make_atari_deepmind('Breakout-v0', render=True)
 
 vec_env = DummyVecEnv([make_env for _ in range(1)])
 
@@ -114,7 +114,7 @@ net = DuelingDQN(env, device)
 net.apply(init_weights)
 net = net.to(device)
 
-net.load('./atari_model_DuelingDQN_SpaceInvaders_v0.pack')
+net.load('/atari_model_DuelingDQN_Breakout.pack')
 
 
 obs = env.reset()
